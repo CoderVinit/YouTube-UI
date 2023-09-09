@@ -15,10 +15,7 @@ const Container = styled.div`
 const Content = styled.div`
   flex: 5;
 `;
-const VideoWrapper = styled.div`
-  border-radius: 20px;
-  overflow: hidden;
-`;
+const VideoWrapper = styled.div``;
 
 const Title = styled.h1`
   font-size: 18px;
@@ -90,7 +87,7 @@ const Hr = styled.hr`
   border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
-const Video = () => {
+const Video = ({ video }) => {
   return (
     <Container>
       <Content>
@@ -98,7 +95,7 @@ const Video = () => {
           <iframe
             width="100%"
             height="450"
-            src="https://youtu.be/yIaXoop8gl4"
+            src={video.videoUrl}
             title="Youtube video player"
             allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
             allowFullScreen

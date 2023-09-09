@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
@@ -46,25 +47,31 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const Card = ({ type }) => {
+const Card = ({ type, video }) => {
+  const [User, setUser] = useState({});
+
+  useEffect(() => {
+    const sendRequest = async () => {
+      const res = await axios.get(
+        `http://localhost:8000/api/users/find/${video.userId}`
+      );
+      setUser(res.data);
+    };
+    sendRequest();
+  }, [video.userId]);
+
   return (
     <Link to="/video/test" style={{ textDecoration: "none" }}>
       <Container type={type}>
-        <Img
-          src="https://images.unsplash.com/photo-1522873771509-05addcdfb16a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
-          alt=""
-          type={type}
-        />
+        <Img src={video.imgUrl} alt="" type={type} />
         <Details type={type}>
-          <ChannelImg
-            src="https://images.unsplash.com/photo-1552843389-b22eaaf3a400?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
-            alt=""
-            type={type}
-          />
+          <ChannelImg src={User.img} alt="" type={type} />
           <Text>
-            <Title>Hye</Title>
-            <ChannelName>Test video</ChannelName>
-            <Info>60 views . 1 day ago</Info>
+            <Title>{video.title}</Title>
+            <ChannelName>{User.name}</ChannelName>
+            <Info>
+              {video.views} views . {video.createdAt}
+            </Info>
           </Text>
         </Details>
       </Container>

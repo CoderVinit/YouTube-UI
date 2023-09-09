@@ -13,7 +13,7 @@ router.put("/:id", tokenvarify, update)
 router.delete("/:id", tokenvarify, deleteUser)
 
 // getuser
-router.get("/find/:id", tokenvarify, getUser)
+router.get("/find/:id", getUser)
 
 // subscribe user 
 router.put("/subs/:id", tokenvarify, subscribe)
