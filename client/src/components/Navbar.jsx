@@ -3,6 +3,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
+import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 
 const Container = styled.div`
   position: sticky;
@@ -54,7 +56,20 @@ const Button = styled.button`
   text-decoration: none;
 `;
 
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+`;
+const Avatar = styled.img`
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+`;
+
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Container>
       <Wrapper>
@@ -80,12 +95,20 @@ const Navbar = () => {
             }}
           />
         </Search>
-        <Link to="signin" style={{ textDecoration: "none" }}>
-          <Button>
-            <AccountCircleOutlinedIcon />
-            SIGN IN
-          </Button>
-        </Link>
+        {currentUser ? (
+          <User>
+            <VideoCallOutlinedIcon />
+            <Avatar src={currentUser.img} />
+            {currentUser.name}
+          </User>
+        ) : (
+          <Link to="signin" style={{ textDecoration: "none" }}>
+            <Button>
+              <AccountCircleOutlinedIcon />
+              SIGN IN
+            </Button>
+          </Link>
+        )}
       </Wrapper>
     </Container>
   );

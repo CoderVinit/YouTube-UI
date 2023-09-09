@@ -1,5 +1,8 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 const Container = styled.div`
   height: calc(100vh-60px);
   display: flex;
@@ -57,19 +60,51 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res = await axios.post("http://localhost:8000/api/auth/signin", {
+        name,
+        password,
+      });
+      dispatch(loginSuccess(res.data));
+    } catch (error) {
+      dispatch(loginFailure());
+    }
+  };
   return (
     <Container>
       <Wrapper>
         <Title>Sign In</Title>
         <Subtitle>to continue to YouTube</Subtitle>
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
-        <Button>Sign In</Button>
+        <Input
+          placeholder="Username"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button onClick={handleLogin}>Sign In</Button>
 
         <Subtitle>Or</Subtitle>
-        <Input placeholder="Username" />
-        <Input placeholder="Email" />
-        <Input placeholder="Password" />
+        <Input
+          placeholder="Username"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <Button>Sign Up</Button>
       </Wrapper>
       <More>
